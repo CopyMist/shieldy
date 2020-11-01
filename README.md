@@ -1,5 +1,3 @@
-[![@shieldy_bot](/design/banner.png?raw=true)](https://t.me/shieldy_bot)
-
 # [@shieldy_bot](https://t.me/shieldy_bot) Telegram bot code
 
 This is the code for the anti-spam Telegram bot I've built. Enjoy and feel free to reuse!

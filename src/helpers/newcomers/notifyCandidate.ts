@@ -6,15 +6,6 @@ import { ContextMessageUpdate, Extra, Markup } from 'telegraf'
 import { strings } from '@helpers/strings'
 import { constructMessageWithEntities } from '@helpers/newcomers/constructMessageWithEntities'
 import { getLink, getName, getUsername } from '@helpers/getUsername'
-import { isRuChat } from '@helpers/isRuChat'
-
-const promoAdditions = {
-  goldenBorodutch:
-    'Powered by <a href="https://t.me/golden_borodutch">Golden Borodutch</a>',
-  todorant:
-    'Powered by <a href="https://todorant.com/?ref=shieldy">Todorant</a>',
-}
-const promoExceptions = [-1001007166727]
 
 export async function notifyCandidate(
   ctx: ContextMessageUpdate,
@@ -69,11 +60,6 @@ export async function notifyCandidate(
         messageToSend.text,
         messageToSend.entities
       )
-      if (!promoExceptions.includes(ctx.chat.id)) {
-        const promoAddition =
-          promoAdditions[isRuChat(chat) ? 'goldenBorodutch' : 'todorant']
-        formattedText = `${formattedText}\n${promoAddition}`
-      }
       if (image) {
         return ctx.replyWithPhoto({ source: image.png } as any, {
           caption: formattedText,
@@ -92,11 +78,7 @@ export async function notifyCandidate(
         message.text,
         message.entities
       )
-      const promoAddition =
-        promoAdditions[isRuChat(chat) ? 'goldenBorodutch' : 'todorant']
-      message.text = promoExceptions.includes(ctx.chat.id)
-        ? `${getUsername(candidate)}\n\n${formattedText}`
-        : `${getUsername(candidate)}\n\n${formattedText}\n${promoAddition}`
+      message.text = `${getUsername(candidate)}\n\n${formattedText}`
       try {
         const sentMessage = await ctx.telegram.sendCopy(
           chat.id,
@@ -116,30 +98,17 @@ export async function notifyCandidate(
     }
   } else {
     if (image) {
-      const promoAddition =
-        promoAdditions[isRuChat(chat) ? 'goldenBorodutch' : 'todorant']
       return ctx.replyWithPhoto({ source: image.png } as any, {
-        caption: promoExceptions.includes(ctx.chat.id)
-          ? `<a href="tg://user?id=${candidate.id}">${getUsername(
+        caption: `<a href="tg://user?id=${candidate.id}">${getUsername(
               candidate
             )}</a>${warningMessage} (${chat.timeGiven} ${strings(
               chat,
               'seconds'
-            )})`
-          : `<a href="tg://user?id=${candidate.id}">${getUsername(
-              candidate
-            )}</a>${warningMessage} (${chat.timeGiven} ${strings(
-              chat,
-              'seconds'
-            )})\n${promoAddition}`,
+            )})`,
         parse_mode: 'HTML',
       })
     } else {
-      const promoAddition =
-        promoAdditions[isRuChat(chat) ? 'goldenBorodutch' : 'todorant']
-      return ctx.replyWithMarkdown(
-        promoExceptions.includes(ctx.chat.id)
-          ? `${
+      return ctx.replyWithMarkdown(`${
               chat.captchaType === CaptchaType.DIGITS
                 ? `(${equation.question}) `
                 : ''
@@ -148,17 +117,7 @@ export async function notifyCandidate(
             )}</a>${warningMessage} (${chat.timeGiven} ${strings(
               chat,
               'seconds'
-            )})`
-          : `${
-              chat.captchaType === CaptchaType.DIGITS
-                ? `(${equation.question}) `
-                : ''
-            }<a href="tg://user?id=${candidate.id}">${getUsername(
-              candidate
-            )}</a>${warningMessage} (${chat.timeGiven} ${strings(
-              chat,
-              'seconds'
-            )})\n${promoAddition}`,
+            )})`,
         extra
       )
     }
