@@ -39,9 +39,9 @@ export async function checkRestrict(
       message.forward_from_chat ||
       message.document ||
       message.sticker ||
-      message.photo ||
+      /*message.photo ||*/
       message.video_note ||
-      message.video ||
+      /*message.video ||*/
       message.game)
   ) {
     deleteMessageSafe(ctx)

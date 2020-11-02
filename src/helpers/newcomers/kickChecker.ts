@@ -15,7 +15,7 @@ async function check() {
   checking = true
   try {
     const chats = await findChatsWithCandidates()
-    console.log(`Found ${chats.length} chats with candidates`)
+    /*console.log(`Found ${chats.length} chats with candidates`)*/
     for (const chat of chats) {
       // Check candidates
       const candidatesToDelete = []
@@ -54,7 +54,7 @@ async function check() {
   } catch (err) {
     report(err, 'checking candidates')
   } finally {
-    console.log('Finished checking chats with candidates')
+    /*console.log('Finished checking chats with candidates')*/
     checking = false
   }
 }

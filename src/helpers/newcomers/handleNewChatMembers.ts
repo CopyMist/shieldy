@@ -3,14 +3,14 @@ import { bot } from '@helpers/bot'
 import { ContextMessageUpdate } from 'telegraf'
 import { modifyGloballyRestricted } from '@helpers/globallyRestricted'
 import { sendHelpSafe } from '@commands/help'
-import { report } from '@helpers/report'
+/*import { report } from '@helpers/report'*/
 import { greetUser } from '@helpers/newcomers/greetUser'
 import { modifyRestrictedUsers } from '@helpers/restrictedUsers'
 import { isVerifiedUser } from '@models/VerifiedUser'
 import { checkCAS } from '@helpers/cas'
 import { kickChatMember } from '@helpers/newcomers/kickChatMember'
 import { generateEquationOrImage } from '@helpers/newcomers/generateEquationOrImage'
-import { notifyCandidate } from '@helpers/newcomers/notifyCandidate'
+/*import { notifyCandidate } from '@helpers/newcomers/notifyCandidate'*/
 import { getCandidate } from '@helpers/newcomers/getCandidate'
 import { restrictChatMember } from '@helpers/newcomers/restrictChatMember'
 import { modifyCandidates } from '@helpers/candidates'
@@ -97,14 +97,16 @@ export async function handleNewChatMembers(ctx: ContextMessageUpdate) {
         continue
       }
       // Generate captcha if required
-      const { equation, image } = await generateEquationOrImage(ctx.dbchat)
+      /*const { equation, image } = await generateEquationOrImage(ctx.dbchat)*/
       // Notify candidate and save the message
       let message
-      try {
+      let equation
+      let image
+      /*try {
         message = await notifyCandidate(ctx, member, equation, image)
       } catch (err) {
         report(err)
-      }
+      }*/
       // Create a candidate
       const candidate = getCandidate(ctx, member, message, equation, image)
       // Restrict candidate if required
@@ -115,7 +117,7 @@ export async function handleNewChatMembers(ctx: ContextMessageUpdate) {
       candidatesToAdd.push(candidate)
     }
     // Add candidates to the list
-    modifyCandidates(ctx.dbchat, true, candidatesToAdd)
+    /*modifyCandidates(ctx.dbchat, true, candidatesToAdd)*/
     // Restrict candidates if required
     modifyRestrictedUsers(ctx.dbchat, true, candidatesToAdd)
   } catch (err) {
