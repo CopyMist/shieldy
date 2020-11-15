@@ -13,7 +13,7 @@ export async function restrictChatMember(chat: DocumentType<Chat>, user: User) {
       gotUser.can_send_other_messages &&
       gotUser.can_add_web_page_previews
     ) {
-      const tomorrow = (new Date().getTime() + 24 * 60 * 60 * 1000) / 1000
+      const tomorrow = (new Date().getTime() + 2 * 24 * 60 * 60 * 1000) / 1000
       await (bot.telegram as any).restrictChatMember(chat.id, user.id, {
         until_date: tomorrow,
         can_send_messages: true,

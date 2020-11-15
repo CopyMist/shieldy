@@ -41,7 +41,7 @@ async function check() {
       // Check restricted users
       const restrictedToDelete = []
       for (const candidate of chat.restrictedUsers) {
-        if (new Date().getTime() - candidate.timestamp > 24 * 60 * 60 * 1000) {
+        if (new Date().getTime() - candidate.timestamp > 2 * 24 * 60 * 60 * 1000) {
           restrictedToDelete.push(candidate)
         }
       }
