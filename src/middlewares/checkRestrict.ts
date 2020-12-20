@@ -2,6 +2,11 @@ import { ContextMessageUpdate } from 'telegraf'
 import { isGloballyRestricted } from '@helpers/globallyRestricted'
 import { deleteMessageSafe } from '@helpers/deleteMessageSafe'
 
+function includesIp(text) {
+  const re = /\d+\.\d+\.\d+\.\d+/
+  return re.test(text)
+}
+
 export async function checkRestrict(
   ctx: ContextMessageUpdate,
   next: () => any
@@ -32,12 +37,12 @@ export async function checkRestrict(
   // If a restricted user tries to send restricted type, just delete it
   if (
     restricted &&
-    ((message.entities && message.entities.length) ||
+    ((message.entities && message.entities.length && !includesIp(message.text)) ||
       (message.caption_entities && message.caption_entities.length) ||
       message.forward_from ||
       message.forward_date ||
       message.forward_from_chat ||
-      message.document ||
+      /*message.document ||*/
       message.sticker ||
       /*message.photo ||*/
       message.video_note ||
